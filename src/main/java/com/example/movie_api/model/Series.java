@@ -1,14 +1,18 @@
 package com.example.movie_api.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 
 @Entity
 @Table(name = "series")
 public class Series {
-      @Id
+    @Id
     @Column(name = "id")
-    private int id;
+    private Long id;
+
     @Column(name = "title")
     private String title;
     
@@ -26,24 +30,114 @@ public class Series {
 
     @Column(name = "imdb_rating")
     private Double imdb_rating;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "series_genre",
+        joinColumns = @JoinColumn(name = "series_id"),
+        inverseJoinColumns = @JoinColumn(name = "genre_id")
+        
+        )
+        private Set<Genre> genres = new HashSet<Genre>();
 
+    @ManyToMany
+    @JoinTable(
+        name = "series_cast",
+        joinColumns = @JoinColumn(name = "series_id"),
+        inverseJoinColumns = @JoinColumn(name = "cast_id")
+        
+        )
+    private Set<Cast> casts = new HashSet<Cast>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "series_production",
+        joinColumns = @JoinColumn(name = "series_id"),
+        inverseJoinColumns = @JoinColumn(name = "production_id")
+        
+        )
+    private Set<Production> productions = new HashSet<Production>();
+
+    @OneToMany(mappedBy = "series")
+    private Set<Season> seasons = new HashSet<Season>();
+
+    
+    @ManyToMany
+    @JoinTable(
+        name = "series_rating",
+        joinColumns = @JoinColumn(name = "series_id"),
+        inverseJoinColumns = @JoinColumn(name = "rating_id")
+        
+        )
+    private Set<Rating> ratings = new HashSet<Rating>();
+    
     public Series(){}
 
+    
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
+
+
+    public Set<Cast> getCasts() {
+        return casts;
+    }
+
+
+    public void setCasts(Set<Cast> casts) {
+        this.casts = casts;
+    }
+
+
+    public Set<Production> getProductions() {
+        return productions;
+    }
+
+
+    public void setProductions(Set<Production> productions) {
+        this.productions = productions;
+    }
+
+
+    
+
     public Series(String title, String summary, Integer release_year, Integer duration, String country,
-            Double imdb_rating) {
+            Double imdb_rating, Set<Genre> genres, Set<Cast> casts, Set<Production> productions, Set<Season> seasons,
+            Set<Rating> ratings) {
         this.title = title;
         this.summary = summary;
         this.release_year = release_year;
         this.duration = duration;
         this.country = country;
         this.imdb_rating = imdb_rating;
+        this.genres = genres;
+        this.casts = casts;
+        this.productions = productions;
+        this.seasons = seasons;
+        this.ratings = ratings;
     }
 
-    public int getId() {
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -93,6 +187,16 @@ public class Series {
 
     public void setImdb_rating(Double imdb_rating) {
         this.imdb_rating = imdb_rating;
+    }
+
+
+    public Set<Season> getSeasons() {
+        return seasons;
+    }
+
+
+    public void setSeasons(Set<Season> seasons) {
+        this.seasons = seasons;
     }
 
     

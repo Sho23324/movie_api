@@ -1,5 +1,10 @@
 package com.example.movie_api.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.jmx.export.annotation.ManagedNotification;
+
 import jakarta.persistence.*;
 @Entity
 @Table(name = "casts")
@@ -10,6 +15,9 @@ public class Cast {
 
     @Column(name = "name")
     private String name;
+    
+    @ManyToMany(mappedBy = "casts")
+    private Set<Movie> movies = new HashSet<>();
 
     public Cast(){}
 
@@ -31,6 +39,14 @@ public class Cast {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Set<Movie> movies) {
+        this.movies = movies;
     }
     
 

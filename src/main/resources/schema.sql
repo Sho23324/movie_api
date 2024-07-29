@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS `movies` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255),
@@ -7,10 +6,9 @@ CREATE TABLE IF NOT EXISTS `movies` (
   `duration` INT NOT NULL,
   `country` VARCHAR(100),
   `imdb_rating` DECIMAL(3,1),
+  `cover` VARCHAR(255),
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
-
-
 
 CREATE TABLE IF NOT EXISTS `series` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -20,9 +18,9 @@ CREATE TABLE IF NOT EXISTS `series` (
   `duration` INT NOT NULL,
   `country` VARCHAR(100),
   `imdb_rating` DECIMAL(3,1),
+  `cover` VARCHAR(255),
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
-
 
 CREATE TABLE IF NOT EXISTS `genres` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -30,14 +28,17 @@ CREATE TABLE IF NOT EXISTS `genres` (
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-
 CREATE TABLE IF NOT EXISTS `casts` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100),
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-
+CREATE TABLE IF NOT EXISTS `productions` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100),
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `movie_genre` (
   `movie_id` INT NOT NULL,
@@ -45,10 +46,8 @@ CREATE TABLE IF NOT EXISTS `movie_genre` (
 
   PRIMARY KEY (`movie_id`, `genre_id`),
   FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`),
-  FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`)
+  FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`)
 ) ENGINE = InnoDB;
-
-
 
 CREATE TABLE IF NOT EXISTS `movie_cast` (
   `movie_id` INT NOT NULL,
@@ -59,8 +58,6 @@ CREATE TABLE IF NOT EXISTS `movie_cast` (
   FOREIGN KEY (`cast_id`) REFERENCES `casts` (`id`)
 ) ENGINE = InnoDB;
 
-
-
 CREATE TABLE IF NOT EXISTS `movie_production` (
   `movie_id` INT NOT NULL,
   `production_id` INT NOT NULL,
@@ -70,27 +67,33 @@ CREATE TABLE IF NOT EXISTS `movie_production` (
   FOREIGN KEY (`production_id`) REFERENCES `productions` (`id`)
 ) ENGINE = InnoDB;
 
-
-
-
-
-
-
-                    start here 
-
 CREATE TABLE IF NOT EXISTS `series_cast` (
-  `movie_id` INT NOT NULL,
+  `series_id` INT NOT NULL,
   `cast_id` INT NOT NULL,
 
-  PRIMARY KEY (`movie_id`, `production_id`),
+  PRIMARY KEY (`series_id`, `cast_id`),
   FOREIGN KEY (`series_id`) REFERENCES `series` (`id`),
   FOREIGN KEY (`cast_id`) REFERENCES `casts` (`id`)
 ) ENGINE = InnoDB;
 
-                    series_gender
-                    series_production
+CREATE TABLE IF NOT EXISTS `series_genre` (
+  `series_id` INT NOT NULL,
+  `genre_id` INT NOT NULL,
 
-season
+  PRIMARY KEY (`series_id`, `genre_id`),
+  FOREIGN KEY (`series_id`) REFERENCES `series` (`id`),
+  FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `series_production` (
+  `series_id` INT NOT NULL,
+  `production_id` INT NOT NULL,
+
+  PRIMARY KEY (`series_id`, `production_id`),
+  FOREIGN KEY (`series_id`) REFERENCES `series` (`id`),
+  FOREIGN KEY (`production_id`) REFERENCES `productions` (`id`)
+) ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `seasons` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `series_id` INT NOT NULL,
@@ -98,59 +101,50 @@ CREATE TABLE IF NOT EXISTS `seasons` (
   `summary` TEXT NOT NULL,
   `release_year` INT NOT NULL,
   `imdb_rating` DECIMAL(3,1),
-  PRIMARY KEY `id`(`id`)
-  FOREIGN KEY (`series_id`) REFERENCES `series`(`id`)
+
+  PRIMARY KEY `id`(`id`),
+  FOREIGN KEY (`series_id`) REFERENCES `series` (`id`)
 ) ENGINE = InnoDB;
 
-                       episode->change attributes->no summary attribute
 CREATE TABLE IF NOT EXISTS `episodes` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `series_id` INT NOT NULL,
-  `season_number` INT NOT NULL,
-  `summary` TEXT NOT NULL,
-  `release_year` INT NOT NULL,
+  `season_id` INT NOT NULL,
+  `title` VARCHAR(255),
+  `episode_number` INT NOT NULL,
+  `air_date` DATE NOT NULL,
   `imdb_rating` DECIMAL(3,1),
-  PRIMARY KEY `id`(`id`)
-  FOREIGN KEY (`series_id`) REFERENCES `series`(`id`)
+
+  PRIMARY KEY `id`(`id`),
+  FOREIGN KEY (`season_id`) REFERENCES `seasons` (`id`)
 ) ENGINE = InnoDB;
 
-
-
-
-nothing change just run
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50),
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-
-nothing change just run
 CREATE TABLE IF NOT EXISTS `users` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(225),
-  `displayname` VARCHAR(225),
-  `email` VARCHAR(225),
-  `password` VARCHAR(225),
+  `username` VARCHAR(255),
+  `displayname` VARCHAR(255),
+  `email` VARCHAR(255),
+  `password` VARCHAR(255),
   `role_id` INT NOT NULL,
 
-  PRIMARY KEY (`id`),
-  FOREIGN KEY ('role_id') REFERENCES roles(`id`)
+  PRIMARY KEY `id`(`id`),
+  FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE = InnoDB;
 
-
-nothing change just run
 CREATE TABLE IF NOT EXISTS `ratings` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `value` DECIMAL(3,1),
-  
-  PRIMARY KEY (`id`),
-  FOREIGN KEY ('user_id') REFERENCES users(`id`)
+
+  PRIMARY KEY `id`(`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  UNIQUE (`user_id`, `value`)
 ) ENGINE = InnoDB;
-
-
-
 
 CREATE TABLE IF NOT EXISTS `movie_rating` (
   `movie_id` INT NOT NULL,
@@ -160,7 +154,6 @@ CREATE TABLE IF NOT EXISTS `movie_rating` (
   FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`),
   FOREIGN KEY (`rating_id`) REFERENCES `ratings` (`id`)
 ) ENGINE = InnoDB;
-
 
 CREATE TABLE IF NOT EXISTS `series_rating` (
   `series_id` INT NOT NULL,
@@ -179,8 +172,6 @@ CREATE TABLE IF NOT EXISTS `season_rating` (
   FOREIGN KEY (`season_id`) REFERENCES `seasons` (`id`),
   FOREIGN KEY (`rating_id`) REFERENCES `ratings` (`id`)
 ) ENGINE = InnoDB;
-
-
 
 CREATE TABLE IF NOT EXISTS `episode_rating` (
   `episode_id` INT NOT NULL,
