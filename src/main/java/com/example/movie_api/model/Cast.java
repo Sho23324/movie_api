@@ -3,7 +3,6 @@ package com.example.movie_api.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.jmx.export.annotation.ManagedNotification;
 
 import jakarta.persistence.*;
 @Entity

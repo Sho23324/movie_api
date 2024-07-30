@@ -41,8 +41,12 @@ public class Production {
 
     public Production(){}
 
-    public Production(String name) {
+   
+
+    public Production(String name, Set<Movie> movies, Set<Series> series) {
         this.name = name;
+        this.movies = movies;
+        this.series = series;
     }
 
     public Long getId() {

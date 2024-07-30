@@ -60,10 +60,9 @@ public class Genre {
     public Genre() {
     }
 
-    public Genre(String name, Set<Movie> movies, Set<Series> series) {
+    public Genre(String name) {
         this.name = name;
-        this.movies = movies;
-        this.series = series;
+
     }
 
    

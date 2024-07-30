@@ -1,11 +1,11 @@
 -- roles
 INSERT INTO `roles`(`name`) VALUES
-(`admin`),
-(`user`)
+('admin'),
+('user')
 ;
 
 
-INSERT INTO `genres`(``) VALUES
-(),
-;
+-- INSERT INTO `genres`(``) VALUES
+-- (),
+-- ;
 
