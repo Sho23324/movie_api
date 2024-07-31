@@ -3,25 +3,46 @@ package com.example.movie_api.model;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import jakarta.persistence.*;
+
 @Entity
 @Table(name = "casts")
 public class Cast {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
     private String name;
-    
-    @ManyToMany(mappedBy = "casts")
-    private Set<Movie> movies = new HashSet<>();
 
-    public Cast(){}
+    @ManyToMany(mappedBy = "casts")
+    private Set<Movie> movies = new HashSet<Movie>();
+
+    @ManyToMany(mappedBy = "casts")
+    private Set<Series> series = new HashSet<Series>();
+
+    public Set<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Set<Movie> movies) {
+        this.movies = movies;
+    }
+
+    public Set<Series> getSeries() {
+        return series;
+    }
+
+    public void setSeries(Set<Series> series) {
+        this.series = series;
+    }
 
     public Cast(String name) {
         this.name = name;
+    }
+
+    public Cast() {
     }
 
     public Long getId() {
@@ -39,15 +60,4 @@ public class Cast {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Set<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(Set<Movie> movies) {
-        this.movies = movies;
-    }
-    
-
-    
 }

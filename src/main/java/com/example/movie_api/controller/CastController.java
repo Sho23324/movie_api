@@ -49,13 +49,13 @@ public class CastController {
         return ResponseEntity.created(new_cast_location).build();
     }
 
-    @DeleteMapping("casts/{castId}")
+    @DeleteMapping("/casts/{castId}")
     public ResponseEntity<Void> deleteCast(@PathVariable Long castId) {
         castService.deleteCast(castId);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("casts/{castId}")
+    @PutMapping("/casts/{castId}")
     public ResponseEntity<Void> updateCast(@PathVariable Long castId, @RequestBody Cast newCast) {
         try {
             castService.updateCast(castId, newCast);

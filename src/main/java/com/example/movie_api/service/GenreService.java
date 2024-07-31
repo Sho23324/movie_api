@@ -30,7 +30,7 @@ public class GenreService {
     public void updateGenre(Long genreId, Genre updatedGenre) {
         Genre genre = getGenre(genreId);
         updatedGenre.setId(genre.getId());
-        genreRepository.save(genre);
+        genreRepository.save(updatedGenre);
     }
 
 

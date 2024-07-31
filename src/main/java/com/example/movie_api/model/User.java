@@ -1,29 +1,23 @@
 package com.example.movie_api.model;
 
-
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    
+
     @Column(name = "username")
     private String username;
 
     @Column(name = "displayname")
-    private Long displayname;
+    private String displayname;
 
     @Column(name = "email")
     private String email;
@@ -34,18 +28,29 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
-    public User(){}
-    public User(String username, Long displayname, String email, String password, Role role) {
+
+    @OneToMany(mappedBy = "user")
+    private Set<Rating> ratings = new HashSet<Rating>();
+
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public User(String username, String displayname, String email, String password, Role role, Set<Rating> ratings) {
         this.username = username;
         this.displayname = displayname;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.ratings = ratings;
     }
-    @OneToMany(mappedBy = "user")
-    private Set<Rating> ratings = new HashSet<Rating>();
 
-
+    public User() {
+    }
 
     public Long getId() {
         return id;
@@ -63,11 +68,11 @@ public class User {
         this.username = username;
     }
 
-    public Long getDisplayname() {
+    public String getDisplayname() {
         return displayname;
     }
 
-    public void setDisplayname(Long displayname) {
+    public void setDisplayname(String displayname) {
         this.displayname = displayname;
     }
 
@@ -94,15 +99,4 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
-    public Set<Rating> getRatings() {
-        return ratings;
-    }
-    public void setRatings(Set<Rating> ratings) {
-        this.ratings = ratings;
-    }
-
-    
-
-
-
 }

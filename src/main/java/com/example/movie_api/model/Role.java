@@ -3,17 +3,13 @@ package com.example.movie_api.model;
 import java.util.HashSet;
 import java.util.Set;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "roles")
 public class Role {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -22,6 +18,14 @@ public class Role {
 
     @OneToMany(mappedBy = "role")
     private Set<User> users = new HashSet<User>();
+
+    public Role(String name, Set<User> users) {
+        this.name = name;
+        this.users = users;
+    }
+
+    public Role() {
+    }
 
     public Long getId() {
         return id;
@@ -46,13 +50,4 @@ public class Role {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
-
-    public Role(){}
-
-    public Role(String name, Set<User> users) {
-        this.name = name;
-        this.users = users;
-    }
-    
-
 }

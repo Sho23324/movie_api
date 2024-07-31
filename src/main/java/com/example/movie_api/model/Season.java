@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 @Table(name = "seasons")
 public class Season {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -21,10 +22,9 @@ public class Season {
     @Column(name = "release_year")
     private Integer release_year;
 
-
     @Column(name = "imdb_rating")
     private Double imdb_rating;
-    
+
     @ManyToOne
     @JoinColumn(name = "series_id", nullable = false)
     private Series series;
@@ -35,15 +35,10 @@ public class Season {
     @ManyToMany
     @JoinTable(
         name = "season_rating",
-        joinColumns = @JoinColumn(name = "season_id"),
-        inverseJoinColumns = @JoinColumn(name = "rating_id")
-        
-        )
-        private Set<Rating> ratings = new HashSet<Rating>();
-
-    public Season(){}
-
-    
+        joinColumns = @JoinColumn(name="season_id"),
+        inverseJoinColumns = @JoinColumn(name="rating_id")
+    )
+    private Set<Rating> ratings = new HashSet<Rating>();
 
     public Season(Integer season_number, String summary, Integer release_year, Double imdb_rating, Series series,
             Set<Episode> episodes, Set<Rating> ratings) {
@@ -56,7 +51,8 @@ public class Season {
         this.ratings = ratings;
     }
 
-
+    public Season() {
+    }
 
     public Long getId() {
         return id;
@@ -121,6 +117,4 @@ public class Season {
     public void setRatings(Set<Rating> ratings) {
         this.ratings = ratings;
     }
-
-    
 }

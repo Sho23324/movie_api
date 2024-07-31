@@ -5,11 +5,11 @@ import java.util.Set;
 
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "productions")
 public class Production {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -20,12 +20,13 @@ public class Production {
     private Set<Movie> movies = new HashSet<Movie>();
 
     @ManyToMany(mappedBy = "productions")
-    private Set<Series>  series= new HashSet<Series>();
+    private Set<Series> series = new HashSet<Series>();
 
-    
+
     public Set<Movie> getMovies() {
         return movies;
     }
+
 
     public void setMovies(Set<Movie> movies) {
         this.movies = movies;
@@ -39,14 +40,11 @@ public class Production {
         this.series = series;
     }
 
-    public Production(){}
-
-   
-
-    public Production(String name, Set<Movie> movies, Set<Series> series) {
+    public Production(String name) {
         this.name = name;
-        this.movies = movies;
-        this.series = series;
+    }
+
+    public Production() {
     }
 
     public Long getId() {
@@ -64,6 +62,4 @@ public class Production {
     public void setName(String name) {
         this.name = name;
     }
-    
-
 }

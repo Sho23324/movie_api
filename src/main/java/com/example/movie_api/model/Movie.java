@@ -11,10 +11,11 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
+
     @Column(name = "title")
     private String title;
-    
+
     @Column(name = "summary")
     private String summary;
 
@@ -30,106 +31,97 @@ public class Movie {
     @Column(name = "imdb_rating")
     private Double imdb_rating;
 
+    @Column(name = "cover")
+    private String cover;
+
     @ManyToMany
     @JoinTable(
         name = "movie_genre",
-        joinColumns = @JoinColumn(name = "moive_id"),
-        inverseJoinColumns = @JoinColumn(name = "genre_id")
-        
-        )
-        private Set<Genre> genres = new HashSet<Genre>();
+        joinColumns = @JoinColumn(name="movie_id"),
+        inverseJoinColumns = @JoinColumn(name="genre_id")
+    )
+    private Set<Genre> genres = new HashSet<Genre>();
 
     @ManyToMany
     @JoinTable(
         name = "movie_cast",
-        joinColumns = @JoinColumn(name = "moive_id"),
-        inverseJoinColumns = @JoinColumn(name = "cast_id")
-        
-        )
+        joinColumns = @JoinColumn(name="movie_id"),
+        inverseJoinColumns = @JoinColumn(name="cast_id")
+    )
     private Set<Cast> casts = new HashSet<Cast>();
 
     @ManyToMany
     @JoinTable(
         name = "movie_production",
-        joinColumns = @JoinColumn(name = "moive_id"),
-        inverseJoinColumns = @JoinColumn(name = "production_id")
-        
-        )
+        joinColumns = @JoinColumn(name="movie_id"),
+        inverseJoinColumns = @JoinColumn(name="production_id")
+    )
     private Set<Production> productions = new HashSet<Production>();
 
     @ManyToMany
     @JoinTable(
         name = "movie_rating",
-        joinColumns = @JoinColumn(name = "moive_id"),
-        inverseJoinColumns = @JoinColumn(name = "rating_id")
-        
-        )
-        private Set<Rating> ratings = new HashSet<Rating>();
+        joinColumns = @JoinColumn(name="movie_id"),
+        inverseJoinColumns = @JoinColumn(name="rating_id")
+    )
+    private Set<Rating> ratings = new HashSet<Rating>();
 
     public Set<Rating> getRatings() {
         return ratings;
     }
 
-
     public void setRatings(Set<Rating> ratings) {
         this.ratings = ratings;
     }
 
+    public Set<Genre> getGenres() {
+        return genres;
+    }
 
-    public Movie() {}
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
 
-  
-        
+    public Set<Cast> getCasts() {
+        return casts;
+    }
+
+    public void setCasts(Set<Cast> casts) {
+        this.casts = casts;
+    }
+
+    public Set<Production> getProductions() {
+        return productions;
+    }
+
+    public void setProductions(Set<Production> productions) {
+        this.productions = productions;
+    }
+
+    public Movie() {
+    }
+
     public Movie(String title, String summary, Integer release_year, Integer duration, String country,
-            Double imdb_rating, Set<Genre> genres, Set<Cast> casts, Set<Production> productions, Set<Rating> ratings) {
+            Double imdb_rating, String cover, Set<Genre> genres, Set<Cast> casts, Set<Production> productions,
+            Set<Rating> ratings) {
         this.title = title;
         this.summary = summary;
         this.release_year = release_year;
         this.duration = duration;
         this.country = country;
         this.imdb_rating = imdb_rating;
+        this.cover = cover;
         this.genres = genres;
         this.casts = casts;
         this.productions = productions;
         this.ratings = ratings;
     }
 
-
-    public Set<Genre> getGenres() {
-        return genres;
-    }
-
-
-    public void setGenres(Set<Genre> genres) {
-        this.genres = genres;
-    }
-
-
-    public Set<Cast> getCasts() {
-        return casts;
-    }
-
-
-    public void setCasts(Set<Cast> casts) {
-        this.casts = casts;
-    }
-
-
-    public Set<Production> getProductions() {
-        return productions;
-    }
-
-
-    public void setProductions(Set<Production> productions) {
-        this.productions = productions;
-    }
-
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -181,6 +173,11 @@ public class Movie {
         this.imdb_rating = imdb_rating;
     }
 
-    
-    
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
 }

@@ -4,60 +4,52 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "episodes")
 public class Episode {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "episode_number")
     private Integer episode_number;
 
     @Column(name = "title")
     private String title;
+
     @Column(name = "air_date")
-    private Date ari_date;
+    private Date air_date;
 
     @Column(name = "imdb_rating")
     private Double imdb_rating;
 
-    @ManyToOne
-    @JoinColumn(name = "season_id", nullable = false)
-    private Season season;
-
     @ManyToMany
     @JoinTable(
         name = "episode_rating",
-        joinColumns = @JoinColumn(name = "episode_id"),
-        inverseJoinColumns = @JoinColumn(name = "rating_id")
-        
-        )
+        joinColumns = @JoinColumn(name="episode_id"),
+        inverseJoinColumns = @JoinColumn(name="rating_id")
+    )
     private Set<Rating> ratings = new HashSet<Rating>();
 
-    public Episode(){}
-    
- 
-
-    public Episode(Integer episode_number, String title, Date ari_date, Double imdb_rating, Season season,
-            Set<Rating> ratings) {
+    public Episode(Integer episode_number, String title, Date air_date, Double imdb_rating, Set<Rating> ratings,
+            Season season) {
         this.episode_number = episode_number;
         this.title = title;
-        this.ari_date = ari_date;
+        this.air_date = air_date;
         this.imdb_rating = imdb_rating;
-        this.season = season;
         this.ratings = ratings;
+        this.season = season;
     }
 
+    public Episode() {
+    }
 
+    @ManyToOne
+    @JoinColumn(name = "season_id", nullable = false)
+    private Season season;
 
     public Long getId() {
         return id;
@@ -83,12 +75,12 @@ public class Episode {
         this.title = title;
     }
 
-    public Date getAri_date() {
-        return ari_date;
+    public Date getAir_date() {
+        return air_date;
     }
 
-    public void setAri_date(Date ari_date) {
-        this.ari_date = ari_date;
+    public void setAir_date(Date air_date) {
+        this.air_date = air_date;
     }
 
     public Double getImdb_rating() {
@@ -114,6 +106,4 @@ public class Episode {
     public void setRatings(Set<Rating> ratings) {
         this.ratings = ratings;
     }
-
-    
 }
