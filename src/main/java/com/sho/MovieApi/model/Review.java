@@ -1,4 +1,7 @@
 package com.sho.MovieApi.model;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -19,7 +22,22 @@ public class Review {
         this.comment = comment;
         this.rating = rating;
     }
+    @ManyToMany(mappedBy = "reviews")
+    private Set<Movie> movies = new HashSet<Movie>();
 
+    @ManyToMany(mappedBy = "reviews")
+    private Set<Series> series = new HashSet<Series>();
+
+    @ManyToMany(mappedBy = "reviews")
+    private Set<Season> seasons = new HashSet<Season>();
+
+    @ManyToMany(mappedBy = "reviews")
+    private Set<Episode> episodes = new HashSet<Episode>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    
     public Review(){}
 
     public Long getId() {

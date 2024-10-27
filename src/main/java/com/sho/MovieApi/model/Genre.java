@@ -1,5 +1,9 @@
 package com.sho.MovieApi.model;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
+
 
 @Entity
 @Table(name = "genres")
@@ -15,6 +19,21 @@ public class Genre {
     public Genre(String name) {
         this.name = name;
     }
+    @ManyToMany
+    @JoinTable(
+        name = "movie_genre",
+        joinColumns = @JoinColumn(name = "genre_id"),
+        inverseJoinColumns = @JoinColumn(name = "movie_id")
+    )
+    private Set<Movie> movies = new HashSet<Movie>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "series_genre",
+        joinColumns = @JoinColumn(name = "genre_id"),
+        inverseJoinColumns = @JoinColumn(name = "series_id")
+    )
+    private Set<Series> series = new HashSet<Series>();
 
     public Genre(){}
 

@@ -1,5 +1,8 @@
 package com.sho.MovieApi.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 
@@ -28,6 +31,13 @@ public class Season {
 
     @Column(name = "review_count")
     private Integer reviewCount = 0;
+
+    
+    @ManyToMany
+    @JoinTable(name = "season_review",
+            joinColumns = @JoinColumn(name = "season_id"),
+            inverseJoinColumns = @JoinColumn(name = "review_id"))
+    private Set<Review> reviews = new HashSet<Review>();
 
     public Season(Integer seasonNumber, String summary, Integer releaseYear, Double imdbRating, Double userRating,
             Integer reviewCount) {

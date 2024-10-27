@@ -1,6 +1,9 @@
 package com.sho.MovieApi.model;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 
@@ -42,6 +45,36 @@ public class Movie {
     @Column(name = "cover")
     private String cover;
 
+    @ManyToMany
+    @JoinTable(name = "movie_genre",
+        joinColumns = @JoinColumn(name = "movie_id"),
+        inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private Set<Genre> genres = new HashSet<Genre>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "movie_cast",
+        joinColumns = @JoinColumn(name = "movie_id"),
+        inverseJoinColumns = @JoinColumn(name = "cast_id")
+    )
+    private Set<Cast> casts = new HashSet<Cast>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "movie_production",
+        joinColumns =  @JoinColumn(name = "movie_id"),
+        inverseJoinColumns = @JoinColumn(name = "production_id")
+    )
+    private Set<Production> productions = new HashSet<Production>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "movie_review",
+        joinColumns = @JoinColumn(name = "movie_id"),
+        inverseJoinColumns = @JoinColumn(name = "review_id")
+    )
+    private Set<Review> reviews = new HashSet<Review>();
+ 
     public Movie(String title, String summary, Integer releaseYear, Integer duration, String country, Double imdbRating,
             String cover) {
         this.title = title;

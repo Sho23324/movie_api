@@ -1,6 +1,8 @@
 package com.sho.MovieApi.model;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -29,6 +31,13 @@ public class Episode {
 
     @Column(name = "review_count")
     private Integer reviewCount = 0;
+
+    
+    @ManyToMany
+    @JoinTable(name = "episode_review",
+            joinColumns = @JoinColumn(name = "episode_id"),
+            inverseJoinColumns = @JoinColumn(name = "review_id"))
+    private Set<Review> reviews = new HashSet<Review>();
 
     public Episode(Integer episodeNumber, String title, Date airDate, Double imdbRating, Double userRating,
             Integer reviewCount) {
