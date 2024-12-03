@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -32,6 +34,10 @@ public class Episode {
     @Column(name = "review_count")
     private Integer reviewCount = 0;
 
+    @ManyToOne
+    @JoinColumn(name = "season_id", nullable = false)
+    @JsonIgnoreProperties(value = "episodes", allowSetters = true)
+    private Season season;  
     
     @ManyToMany
     @JoinTable(name = "episode_review",
@@ -47,6 +53,22 @@ public class Episode {
         this.imdbRating = imdbRating;
         this.userRating = userRating;
         this.reviewCount = reviewCount;
+    }
+
+    public Season getSeason() {
+        return season;
+    }
+
+    public void setSeason(Season season) {
+        this.season = season;
+    }
+
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public Episode(){}

@@ -43,6 +43,9 @@ public class Series {
     @Column(name = "cover")
     private String cover;
 
+    @OneToMany(mappedBy = "series")
+    private Set<Season> seasons = new HashSet<Season>();
+
     @ManyToMany
     @JoinTable(name = "series_genre",
             joinColumns = @JoinColumn(name = "series_id"),

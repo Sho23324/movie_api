@@ -32,7 +32,21 @@ public class Season {
     @Column(name = "review_count")
     private Integer reviewCount = 0;
 
+    public Set<Episode> getEpisodes() {
+        return episodes;
+    }
+
+    public void setEpisodes(Set<Episode> episodes) {
+        this.episodes = episodes;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "series_id", nullable = false)
+    private Series series;
     
+    @OneToMany(mappedBy = "season")
+    private Set<Episode> episodes = new HashSet<>();
+
     @ManyToMany
     @JoinTable(name = "season_review",
             joinColumns = @JoinColumn(name = "season_id"),
@@ -47,6 +61,22 @@ public class Season {
         this.imdbRating = imdbRating;
         this.userRating = userRating;
         this.reviewCount = reviewCount;
+    }
+
+    public Series getSeries() {
+        return series;
+    }
+
+    public void setSeries(Series series) {
+        this.series = series;
+    }
+
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public Season(){}

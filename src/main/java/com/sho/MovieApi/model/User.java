@@ -3,6 +3,8 @@ package com.sho.MovieApi.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +23,7 @@ public class User {
     @Column(name = "id")
     private Long id;
     
-    @Column(name = "name")
+    @Column(name = "username")
     private String name;
 
     @Column(name = "displayname")
@@ -38,6 +40,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
+    @JsonIgnoreProperties(value = "users", allowSetters = true)
     private Role role;
 
     public User(String name, String displayname, String email, String password) {
@@ -55,6 +58,24 @@ public class User {
     }
     public String getDisplayname() {
         return displayname;
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
+    }
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
     }
     public void setDisplayname(String displayname) {
         this.displayname = displayname;
